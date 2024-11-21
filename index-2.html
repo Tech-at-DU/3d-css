@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D CSS</title>
+</head>
+<body>
+
+  <div>
+    <!-- These four radio buttons show the three boxes -->
+    <input data-box="box-one"  type="radio" name="show">
+    <input data-box="box-two" type="radio" name="show">
+    <input data-box="box-three" type="radio" name="show">
+    <input data-box="box-none" type="radio" name="show">
+  </div>
+  
+  <!-- Container -->
+  <div class="container">
+    <style>
+      .container {
+        position: relative;
+        width: 900px;
+        height: 600px;
+        border: 1px solid;
+        /* a 3d container applies perspective to its children */
+        perspective: 400px;
+        /* manages the stacking order for elements in 3d space */
+        transform-style: preserve-3d;
+      }
+    </style>
+
+    <!-- Three colored boxes -->
+    <div class="box box-one"><h1>Tomato</h1></div>
+    <div class="box box-two"><h1>Bisque</h1></div>
+    <div class="box box-three"><h1>Aquamarine</h1></div>
+    
+    <style>
+      .box {
+        box-sizing: border-box;
+        width: 500px;
+        height: 500px;
+        padding: 3rem;
+        display:flex;
+        font-size: 2rem;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        transition: 400ms;
+      }
+
+      .box-one {
+        /* This var is set via JS below */
+        --xyz: translate3d(-400px, 100px, -800px);
+        background-color: tomato;
+        transform: var(--xyz);
+      }
+
+      .box-two {
+        --xyz: translate3d(200px, 100px, -800px);
+        background-color: bisque;
+        transform: var(--xyz);
+      }
+
+      .box-three {
+        --xyz: translate3d(800px, 100px, -800px);
+        background-color: aquamarine;
+        transform: var(--xyz);
+      }
+    </style>
+
+  </div>
+
+  <script>
+    // Get all boxes
+    const boxes = document.querySelectorAll('.box')
+
+    // Delegate this event to the body element
+    document.body.addEventListener('click', (e) => {
+      // If its not an input ignore it
+      if (!e.target.matches('input')) {
+        return
+      }
+
+      // Reset all boxes
+      resetBoxes()
+
+      // Get the name of the box from the data attribute
+      const box = e.target.dataset.box;
+
+      // If this is box-none exit
+      if (box === 'box-none') {
+        return
+      }
+
+      // Set the --xyz prop of the target box
+      document
+        .querySelector(`.${box}`)
+        .style
+        .setProperty('--xyz', 'translate3d(200px, 50px, 0)');
+      console.log(e.target)
+    })
+
+    // Resets the --xyz of all boxes
+    function resetBoxes() {
+      boxes.forEach((box, i) => {
+        box.style.setProperty('--xyz', `translate3d(${i * 600 - 400}px, 100px, -800px)`)
+      })
+    }
+  </script>
+
+</body>
+</html>
