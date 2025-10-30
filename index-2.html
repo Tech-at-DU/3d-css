@@ -16,57 +16,60 @@
     <div class="box box-three"><h1>Aquamarine</h1></div>
   </div>
     
-    <style>
+  <style>
 
-      .container {
-        position: relative;
-        width: 900px;
-        height: 600px;
-        border: 1px solid;
-        /* a 3d container applies perspective to its children */
-        perspective: 400px;
-        /* manages the stacking order for elements in 3d space */
-        transform-style: preserve-3d;
-        /* Prevent pointer events */
-        pointer-events: none;
-      }
+    .container {
+      position: relative;
+      width: 900px;
+      height: 600px;
+      border: 1px solid;
+      /* a 3d container applies perspective to its children */
+      perspective: 400px;
+      /* manages the stacking order for elements in 3d space */
+      transform-style: preserve-3d;
+      /* Prevent pointer events 
+       This is important because transforming elements on the z 
+       axis causes mouse events to target the layers in front! */
+      pointer-events: none;
+    }
 
-      .box {
-        box-sizing: border-box;
-        width: 500px;
-        height: 500px;
-        padding: 3rem;
-        display:flex;
-        font-size: 2rem;
-        justify-content: center;
-        align-items: center;
-        position: absolute;
-        transition: 400ms;
+    .box {
+      box-sizing: border-box;
+      width: 500px;
+      height: 500px;
+      padding: 3rem;
+      display:flex;
+      font-size: 2rem;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      transition: 400ms;
+      /* Make sure the boxes get mouse events! */
+      pointer-events: all;
+    }
 
-        pointer-events: all;
-      }
+    .box-one {
+      /* This var is set via JS below */
+      --xyz: translate3d(-400px, 100px, -800px);
+      background-color: tomato;
+      transform: var(--xyz);
+      /* Event problems occur when boxes are translated on 
+      the z axis */
+      /* transform: none; */
+    }
 
-      .box-one {
-        /* This var is set via JS below */
-        --xyz: translate3d(-400px, 100px, -800px);
-        background-color: tomato;
-        transform: var(--xyz);
-        /* Event problems occur when boxes are translated on the z axis */
-        /* transform: none; */
-      }
+    .box-two {
+      --xyz: translate3d(200px, 100px, -800px);
+      background-color: bisque;
+      transform: var(--xyz);
+    }
 
-      .box-two {
-        --xyz: translate3d(200px, 100px, -800px);
-        background-color: bisque;
-        transform: var(--xyz);
-      }
-
-      .box-three {
-        --xyz: translate3d(800px, 100px, -800px);
-        background-color: aquamarine;
-        transform: var(--xyz);
-      }
-    </style>
+    .box-three {
+      --xyz: translate3d(800px, 100px, -800px);
+      background-color: aquamarine;
+      transform: var(--xyz);
+    }
+  </style>
 
   <script>
     // Get all boxes
@@ -76,25 +79,29 @@
 
     // Delegate this event to the body element
     document.body.addEventListener('click', (e) => {
-      const box = e.target
+      const box = e.target // Get the target
 
+      // Reset all boxes. This sends all of the boxes back if 
+      // none of them had been clicked
       resetBoxes()
 
+      // Check if the current box was clicked. If so it was reset
+      // and currentBox is undefiend
       if (box === currentBox) {
-        console.log("???")
         currentBox = undefined
         return
       }
 
+      // Lets remember the currently selected box
       currentBox = box
 
-      box.style
-        .setProperty('--xyz', 'translate3d(200px, 50px, 0)');
-        console.log(e.target)
-
+      // Set the custom property to translate the boxes.
+      // Show the selected box by setting the --xyz custom prop
+      box.style.setProperty('--xyz', 'translate3d(200px, 50px, 0)');
+        
     })
 
-    // Resets the --xyz of all boxes
+    // Helper function Resets the --xyz of all boxes
     function resetBoxes() {
       boxes.forEach((box, i) => {
         box.style.setProperty('--xyz', `translate3d(${i * 600 - 400}px, 100px, -800px)`)
