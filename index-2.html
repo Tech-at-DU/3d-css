@@ -7,17 +7,17 @@
 </head>
 <body>
 
-  <div>
-    <!-- These four radio buttons show the three boxes -->
-    <input data-box="box-one"  type="radio" name="show">
-    <input data-box="box-two" type="radio" name="show">
-    <input data-box="box-three" type="radio" name="show">
-    <input data-box="box-none" type="radio" name="show">
-  </div>
   
   <!-- Container -->
   <div class="container">
+    <!-- Three colored boxes -->
+    <div class="box box-one"><h1>Tomato</h1></div>
+    <div class="box box-two"><h1>Bisque</h1></div>
+    <div class="box box-three"><h1>Aquamarine</h1></div>
+  </div>
+    
     <style>
+
       .container {
         position: relative;
         width: 900px;
@@ -27,15 +27,10 @@
         perspective: 400px;
         /* manages the stacking order for elements in 3d space */
         transform-style: preserve-3d;
+        /* Prevent pointer events */
+        pointer-events: none;
       }
-    </style>
 
-    <!-- Three colored boxes -->
-    <div class="box box-one"><h1>Tomato</h1></div>
-    <div class="box box-two"><h1>Bisque</h1></div>
-    <div class="box box-three"><h1>Aquamarine</h1></div>
-    
-    <style>
       .box {
         box-sizing: border-box;
         width: 500px;
@@ -47,6 +42,8 @@
         align-items: center;
         position: absolute;
         transition: 400ms;
+
+        pointer-events: all;
       }
 
       .box-one {
@@ -54,6 +51,8 @@
         --xyz: translate3d(-400px, 100px, -800px);
         background-color: tomato;
         transform: var(--xyz);
+        /* Event problems occur when boxes are translated on the z axis */
+        /* transform: none; */
       }
 
       .box-two {
@@ -69,36 +68,30 @@
       }
     </style>
 
-  </div>
-
   <script>
     // Get all boxes
     const boxes = document.querySelectorAll('.box')
 
+    let currentBox = undefined
+
     // Delegate this event to the body element
     document.body.addEventListener('click', (e) => {
-      // If its not an input ignore it
-      if (!e.target.matches('input')) {
-        return
-      }
+      const box = e.target
 
-      // Reset all boxes
       resetBoxes()
 
-      // Get the name of the box from the data attribute
-      const box = e.target.dataset.box;
-
-      // If this is box-none exit
-      if (box === 'box-none') {
+      if (box === currentBox) {
+        console.log("???")
+        currentBox = undefined
         return
       }
 
-      // Set the --xyz prop of the target box
-      document
-        .querySelector(`.${box}`)
-        .style
+      currentBox = box
+
+      box.style
         .setProperty('--xyz', 'translate3d(200px, 50px, 0)');
-      console.log(e.target)
+        console.log(e.target)
+
     })
 
     // Resets the --xyz of all boxes
