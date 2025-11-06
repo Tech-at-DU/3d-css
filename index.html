@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3d CSS</title>
- 
 </head>
 <body>
 
@@ -62,18 +61,20 @@
       /* makes the object hidden from the back. */
       /* backface-visibility: hidden; */
       /* Pushes the circle away from the square on the z axis */
-      transform: translateZ(20px);
+      /* transform: translateZ(20px); */
     }
 
-   &> div:last-child {
+   & > div:last-child {
       /* The back circle is flipped 180deg */
       transform: rotateY(180deg);
       /* Try this, it should "push" the circle away from the square on the z axis */
-      transform: rotateY(180deg) translateZ(20px); 
+      /* transform: rotateY(180deg) translateZ(20px);  */
     }
   }
 
-  /* Notice we're animating the rotateY property! */
+  /* Notice we're animating the rotateY property, 
+  but we also need to set perspective! Setting only 
+  rotateY here would overwrite perspective from above */
   @keyframes spin {
     0% {
       /* We spin the element on it's y axis */
