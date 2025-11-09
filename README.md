@@ -12,6 +12,9 @@ Choose a concept to inspire your design, then take it wherever your imagination 
 - Solar System / Space Travel: orbiting layers, parallax stars, or spinning planets.
 - City Skyline / Landscape: layered perspective with buildings, depth, and motion.
 
-The only requirements are that you use CSS 3d transform properties like: rotate x, y, z, translate 3d, and perspective. 
+**Requirements**:
+You must use CSS 3d transform properties like: rotate x, y, z, translate 3d, and perspective. 
+
+And CSS custom properties. 
 
 There are a few sample files in this repository that have some ideas you can use as a starting point.
